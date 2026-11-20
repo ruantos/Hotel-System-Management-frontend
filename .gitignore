@@ -1,2 +1,14 @@
 docs/
 Skill/
+
+node_modules/
+.next/
+out/
+coverage/
+.env*
+!.env.example
+*.tsbuildinfo
+npm-debug.log*
+.DS_Store
+.vercel/
+.sites-runtime/
