@@ -1,8 +1,10 @@
 import { allowedMethods } from "./backend-routes.ts";
+import { normalizeFrontendOrigin } from "./frontend-origins.ts";
 
 type ProxyOptions = {
   backendUrl?: string;
   frontendOrigin?: string;
+  frontendOrigins?: readonly string[];
   fetcher?: typeof fetch;
 };
 
@@ -24,12 +26,10 @@ function backendAddress(value?: string) {
   } catch { return null; }
 }
 
-function validOrigin(origin: string | null, configured?: string) {
-  if (!origin || !configured) return false;
-  try {
-    const url = new URL(configured);
-    return ["http:", "https:"].includes(url.protocol) && url.origin === configured && origin === configured;
-  } catch { return false; }
+function validOrigin(origin: string | null, options: ProxyOptions) {
+  if (!origin || normalizeFrontendOrigin(origin) !== origin) return false;
+  return [options.frontendOrigin, ...(options.frontendOrigins ?? [])]
+    .some((configured) => normalizeFrontendOrigin(configured) === origin);
 }
 
 export function proxyCookie(cookie: string, backendPath: string) {
@@ -76,7 +76,7 @@ export async function proxyBackend(request: Request, segments: string[], options
   const backend = backendAddress(options.backendUrl);
   if (!backend) return problem(503, "O serviço está temporariamente indisponível. Tente novamente mais tarde.");
   const writes = request.method !== "GET";
-  if (writes && !validOrigin(request.headers.get("origin"), options.frontendOrigin)) {
+  if (writes && !validOrigin(request.headers.get("origin"), options)) {
     return problem(403, "Origem da solicitação não permitida.");
   }
   const contentType = request.headers.get("content-type");

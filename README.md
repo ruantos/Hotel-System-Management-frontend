@@ -4,6 +4,13 @@
 > Frontend conectado; teste positivo de e-mail/token aguarda habilitação e SMTP remoto.
 > Servidor local: http://localhost:3000. Nenhum backend Java local iniciado.
 > [Relatório para o backend](reports/PASSWORD_RECOVERY_BACKEND_REPORT.md).
+>
+> Frontend publicado: https://hotel-system-management-frontend.vercel.app.
+> Login remoto ainda retorna 403 na validação de origem. Correção preparada no
+> BFF para normalizar a configuração e reconhecer os domínios exatos da Vercel;
+> build corrigido validado com login/logout dos dois perfis no Render e 23 testes
+> aprovados. Precisa ser publicado e validado no domínio final.
+> [Diagnóstico e publicação da correção](reports/VERCEL_LOGIN_ORIGIN_REPORT.md).
 
 # Frontend — Sistema de Gerenciamento Hoteleiro
 
@@ -142,9 +149,17 @@ A interface mostra erro recuperável quando a API está indisponível.
 
 O cliente chamará a base relativa `/api/backend`, sem uma variável pública para
 o host da API. Na Vercel, configurar `BACKEND_API_URL` com a API HTTPS real e
-`FRONTEND_ORIGIN` com a origem exata do site. Previews precisam de configuração
-de origem compatível com a validação do BFF. Não usar exportação puramente
-estática: o proxy depende de servidor.
+`FRONTEND_ORIGIN` com a origem do site. Espaços externos e barra final da
+configuração são normalizados; caminhos, credenciais, query e fragmento são
+recusados. Com `VERCEL=1`, o BFF também reconhece os domínios exatos informados
+por `VERCEL_PROJECT_PRODUCTION_URL`, `VERCEL_URL` e `VERCEL_BRANCH_URL`. Manter
+**Automatically expose System Environment Variables** habilitado na Vercel.
+Esses valores são fornecidos pela plataforma; não cadastrá-los manualmente nem
+substituí-los por `Host`/`X-Forwarded-Host` da requisição. Domínios personalizados
+adicionais podem usar `FRONTEND_ORIGIN`. Origens externas ou ausentes continuam
+recusadas e o CSRF permanece obrigatório. Não usar exportação puramente
+estática: o proxy depende de servidor. Alterações de código exigem publicar o
+novo commit; apenas repetir o deploy do commit anterior não inclui a correção.
 
 Não versionar `.env.local`, senhas ou credenciais de demonstração. Não colocar
 `DB_URL`, senhas de bootstrap ou segredos de e-mail em `NEXT_PUBLIC_*`.
