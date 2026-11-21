@@ -37,7 +37,7 @@ direto ao PostgreSQL pelo frontend.
 | Arquivo | Responsabilidade |
 | --- | --- |
 | [README.md](README.md) | Entrada do projeto, stack, configuração e referência dos contratos de integração |
-| [AGENTS.md](AGENTS.md) | Orientações essenciais versionadas e referência às instruções detalhadas em Skill/ |
+| [AGENTS.md](Skill/AGENTS.md) | Orientações essenciais versionadas e referência às instruções detalhadas em Skill/ |
 | [ESCOPO.md](docs/ESCOPO.md) | Produto, requisitos, telas, regras de negócio, plano por etapas, aceite e entrega acadêmica |
 
 O plano detalhado está na [seção 8 do escopo](docs/ESCOPO.md#8-plano-de-implementação-e-desenvolvimento).

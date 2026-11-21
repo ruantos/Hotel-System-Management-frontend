@@ -74,4 +74,4 @@ Para o teste positivo, após habilitar o serviço: solicitar link de conta contr
 - Página de reset com no-referrer/noindex/no-store; sessão/cache privado limpos após sucesso 204.
 - 20 testes locais aprovados. Inspeção visual/interativa em navegador permanece pendente.
 - Demais funcionalidades têm implementação e validação HTTP anterior de 18 cenários: conta/senha, CRUDs, vínculos, reservas e perfis.
-- Ainda faltam publicação do frontend, homologação em navegador, versionamento/CI remoto, autoria e materiais acadêmicos.
+- Ainda faltam publicação do frontend, homologação em navegador, conferência de push/CI remoto, autoria e materiais acadêmicos. A implementação foi versionada durante este trabalho; os ajustes finais de documentação devem acompanhar o próximo commit.
