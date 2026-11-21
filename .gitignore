@@ -1,6 +1,8 @@
 docs/
 Skill/
 
+
+
 node_modules/
 .next/
 out/
@@ -12,3 +14,4 @@ npm-debug.log*
 .DS_Store
 .vercel/
 .sites-runtime/
+.local/

@@ -2,6 +2,7 @@
   "name": "hotel-management-front",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "engines": {
     "node": ">=24 <25",
     "npm": ">=11 <13"
@@ -13,7 +14,11 @@
     "start": "next start",
     "lint": "eslint . --max-warnings=0",
     "typecheck": "next typegen && tsc --noEmit",
-    "check": "npm run lint && npm run typecheck && npm run build"
+    "test": "node --test tests/*.test.mjs",
+    "smoke:backend": "node --env-file-if-exists=.env.local scripts/smoke-backend.mjs",
+    "validate:demo": "node --env-file-if-exists=.env.local scripts/validate-demo.mjs",
+    "check:recovery": "node --env-file-if-exists=.env.local scripts/check-recovery.mjs",
+    "check": "npm run lint && npm run typecheck && npm test && npm run build"
   },
   "dependencies": {
     "@tanstack/react-query": "^5",
@@ -27,7 +32,7 @@
     "@types/node": "^24",
     "@types/react": "^19",
     "@types/react-dom": "^19",
-    "eslint": "^9",
+    "eslint": "10.15.0",
     "eslint-config-next": "16.4.6",
     "typescript": "^5"
   }

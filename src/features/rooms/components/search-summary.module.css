@@ -1,0 +1,4 @@
+.summary { display: flex; align-items: center; flex-wrap: wrap; gap: 1rem 1.5rem; padding-block: 1.5rem; font-size: .875rem; }
+.summary span { display: inline-flex; align-items: center; gap: .5rem; color: var(--color-muted); }
+.summary button { margin-left: auto; border: 0; background: transparent; color: var(--color-brand); text-decoration: underline; text-underline-offset: .25rem; padding: .5rem 0; }
+@media (max-width: 650px) { .summary button { margin-left: 0; } }

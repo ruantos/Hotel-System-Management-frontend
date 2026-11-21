@@ -1,0 +1,5 @@
+.wrapper { padding-block: 4rem; color: var(--color-muted); }
+.line, .block { display: block; background: var(--color-sand); border-radius: .5rem; margin-bottom: 2rem; animation: pulse 1.8s ease-in-out infinite; }
+.line { width: 60%; height: 4rem; }
+.block { height: 24rem; }
+@keyframes pulse { 50% { opacity: .5; } }

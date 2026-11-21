@@ -1,0 +1,150 @@
+{
+  "source": "https://hotel-system-management-backend.onrender.com/v3/api-docs",
+  "verifiedAt": "2026-11-21",
+  "operations": [
+    {
+      "method": "GET",
+      "path": "users/me"
+    },
+    {
+      "method": "PUT",
+      "path": "users/me"
+    },
+    {
+      "method": "PUT",
+      "path": "users/me/password"
+    },
+    {
+      "method": "GET",
+      "path": "rooms/{id}"
+    },
+    {
+      "method": "PUT",
+      "path": "rooms/{id}"
+    },
+    {
+      "method": "DELETE",
+      "path": "rooms/{id}"
+    },
+    {
+      "method": "GET",
+      "path": "room-types/{id}"
+    },
+    {
+      "method": "PUT",
+      "path": "room-types/{id}"
+    },
+    {
+      "method": "DELETE",
+      "path": "room-types/{id}"
+    },
+    {
+      "method": "PUT",
+      "path": "reservations/{id}/dates"
+    },
+    {
+      "method": "PUT",
+      "path": "reservations/{id}/cancel"
+    },
+    {
+      "method": "PUT",
+      "path": "reservations/{id}/approve"
+    },
+    {
+      "method": "GET",
+      "path": "amenities/{id}"
+    },
+    {
+      "method": "PUT",
+      "path": "amenities/{id}"
+    },
+    {
+      "method": "DELETE",
+      "path": "amenities/{id}"
+    },
+    {
+      "method": "POST",
+      "path": "users/receptionists"
+    },
+    {
+      "method": "GET",
+      "path": "rooms"
+    },
+    {
+      "method": "POST",
+      "path": "rooms"
+    },
+    {
+      "method": "GET",
+      "path": "room-types"
+    },
+    {
+      "method": "POST",
+      "path": "room-types"
+    },
+    {
+      "method": "GET",
+      "path": "reservations"
+    },
+    {
+      "method": "POST",
+      "path": "reservations"
+    },
+    {
+      "method": "POST",
+      "path": "auth/reset-password"
+    },
+    {
+      "method": "POST",
+      "path": "auth/register"
+    },
+    {
+      "method": "POST",
+      "path": "auth/forgot-password"
+    },
+    {
+      "method": "GET",
+      "path": "amenities"
+    },
+    {
+      "method": "POST",
+      "path": "amenities"
+    },
+    {
+      "method": "GET",
+      "path": "users"
+    },
+    {
+      "method": "GET",
+      "path": "users/{id}"
+    },
+    {
+      "method": "DELETE",
+      "path": "users/{id}"
+    },
+    {
+      "method": "GET",
+      "path": "rooms/{id}/availability"
+    },
+    {
+      "method": "GET",
+      "path": "reservations/{id}"
+    },
+    {
+      "method": "GET",
+      "path": "auth/me"
+    },
+    {
+      "method": "GET",
+      "path": "auth/csrf"
+    },
+    {
+      "method": "POST",
+      "path": "auth/login"
+    },
+    {
+      "method": "POST",
+      "path": "auth/logout"
+    }
+  ]
+}

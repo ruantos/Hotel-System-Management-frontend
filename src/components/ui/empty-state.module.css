@@ -1,0 +1,4 @@
+.state { padding: clamp(2rem, 5vw, 5rem) 1.5rem; text-align: center; }
+.icon { display: inline-flex; padding: 1.15rem; border-radius: 50%; background: var(--color-sand); color: var(--color-brand); margin-bottom: 1.5rem; }
+.state h2 { font-family: var(--font-display); font-weight: 400; font-size: clamp(1.7rem, 3vw, 2.4rem); margin-bottom: 1rem; }
+.description { max-width: 32rem; margin: 0 auto 1.75rem; color: var(--color-muted); }

@@ -1,0 +1,4 @@
+.grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; margin-bottom: 2rem; }
+.grid p { color: var(--color-muted); font-size: .875rem; }
+.grid strong { display: block; font: 400 3rem/1.5 var(--font-display); }
+@media (max-width: 700px) { .grid { grid-template-columns: 1fr; } }

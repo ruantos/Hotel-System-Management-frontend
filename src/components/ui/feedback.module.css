@@ -1,0 +1,5 @@
+.error { padding: 1rem; color: var(--color-danger); background: #fff1ee; border-left: 3px solid var(--color-danger); margin-block: 1rem; border-radius: .25rem; font-size: .9375rem; }
+.notice { padding: 1rem; background: #eaf2e8; color: var(--color-brand-dark); margin-block: 1rem; border-radius: .3rem; }
+.fieldError { color: var(--color-danger); font-size: .875rem; }
+.hint { color: var(--color-muted); font-size: .8125rem; }
+.loading { padding: 3rem 1rem; color: var(--color-muted); text-align: center; }

@@ -1,24 +1,46 @@
+> Atualização de 21/11/2026: destino confirmado no Render e restaurado no frontend.
+> Swagger remoto conferido: 36 operações, incluindo recuperação/redefinição.
+> As rotas com entrada válida retornam 503, compatível com recuperação desabilitada.
+> Frontend conectado; teste positivo de e-mail/token aguarda habilitação e SMTP remoto.
+> Servidor local: http://localhost:3000. Nenhum backend Java local iniciado.
+> [Relatório para o backend](reports/PASSWORD_RECOVERY_BACKEND_REPORT.md).
+
 # Frontend — Sistema de Gerenciamento Hoteleiro
 
-Este repositório será responsável pelo **frontend de um sistema hoteleiro cujo
+Este repositório implementa o **frontend de um sistema hoteleiro cujo
 backend já está implementado**. O site oferecerá catálogo público, área do
 cliente e gestão pela recepção, consumindo a API Spring Boot existente e os dados
 persistidos no PostgreSQL.
 
-**Estado em 20/11/2026:** há somente documentação neste diretório. Ainda não há
-aplicação Next.js, `package.json`, lockfile, BFF ou deploy verificado. Os recursos
-descritos abaixo são contratos herdados e decisões de implementação, não
-funcionalidades já entregues pelo frontend.
+**Estado em 20/11/2026:** etapas 1 a 7 implementadas no frontend, com BFF,
+autenticação, própria conta, dois CRUDs, catálogo, reservas e telas da recepção.
+O código usa a API real, sem banco paralelo ou dados fictícios como resultado.
+A validação HTTP autenticada dos dois perfis, dos CRUDs e do ciclo de reservas
+foi concluída pelo BFF. Inspeção visual, publicação e recuperação de senha
+ainda permanecem pendentes; não equivale à entrega integral do escopo.
+
+**Backend informado:** https://hotel-system-management-backend.onrender.com.
+O OpenAPI publicado confirmou as 34 operações do contrato. Consultas públicas
+retornaram 500 em uma execução anterior, mas **voltaram a responder com 200**
+na nova validação. Login, rotação de sessão, permissões, conta, senha, cookies,
+CSRF, logout, CRUDs e reservas foram exercitados no serviço real pelo BFF.
+
+O nome **Maré Hotel** e as fotografias são editoriais/ilustrativos. Recuperação
+de senha segue indisponível na API; as páginas correspondentes explicam essa
+limitação e não simulam envio de e-mail. Foram preparados registros fictícios
+novos para a demonstração; os dados preexistentes e a conta de recepção foram
+preservados. Não houve alteração de código/configuração do backend ou acesso
+direto ao PostgreSQL pelo frontend.
 
 ## Documentação consolidada
 
 | Arquivo | Responsabilidade |
 | --- | --- |
 | [README.md](README.md) | Entrada do projeto, stack, configuração e referência dos contratos de integração |
-| [AGENTS.md](AGENTS.md) | Instruções para implementar, organizar e verificar alterações neste repositório |
-| [ESCOPO.md](ESCOPO.md) | Produto, requisitos, telas, regras de negócio, plano por etapas, aceite e entrega acadêmica |
+| [AGENTS.md](AGENTS.md) | Orientações essenciais versionadas e referência às instruções detalhadas em Skill/ |
+| [ESCOPO.md](docs/ESCOPO.md) | Produto, requisitos, telas, regras de negócio, plano por etapas, aceite e entrega acadêmica |
 
-O plano detalhado está na [seção 8 do escopo](ESCOPO.md#8-plano-de-implementação-e-desenvolvimento).
+O plano detalhado está na [seção 8 do escopo](docs/ESCOPO.md#8-plano-de-implementação-e-desenvolvimento).
 Ao alterar um contrato ou requisito, atualizar o documento responsável e suas
 referências, evitando criar novas cópias do mesmo contexto.
 
@@ -37,11 +59,15 @@ referências, evitando criar novas cópias do mesmo contexto.
 | Banco e documentação da API | PostgreSQL, springdoc 3.2.0, Swagger/OpenAPI |
 | Hospedagem prevista da API | Docker no Render e PostgreSQL remoto, descrito originalmente com Neon |
 
-As versões do backend acima são as registradas no levantamento herdado. As
-versões de Node.js, Next.js, React e demais dependências do frontend serão
-validadas e fixadas na etapa de fundação. Usar npm como padrão inicial e
-versionar `package-lock.json`; se já existir outro lockfile no início da
-implementação, preservar o gerenciador correspondente.
+Versões iniciais instaladas: Node.js 24.20.0, npm 12.2.2, Next.js 16.4.6,
+React/React DOM 19.3.1, TypeScript 5.9.3, TanStack Query 5.108.2, Zustand 5.1.0
+e ESLint 10.15.0.
+O `package-lock.json` fixa a árvore de dependências. Usar npm e a versão de Node
+registrada em `.nvmrc`. As versões do backend também foram conferidas no pom local.
+
+A configuração segue a [instalação oficial do Next.js](https://nextjs.org/docs/app/getting-started/installation),
+a [instalação do TanStack Query](https://tanstack.com/query/latest/docs/framework/react/installation)
+e o [store por provider recomendado pelo Zustand para Next.js](https://zustand.docs.pmnd.rs/learn/guides/nextjs).
 
 ```text
 Navegador
@@ -55,7 +81,7 @@ domínios diferentes. O navegador nunca acessa o banco. A autenticação usa ses
 HTTP. Não substituir a API e sua persistência por Back4App, Supabase ou
 armazenamento local.
 
-Organização proposta, a criar durante a implementação:
+Organização por funcionalidades; as áreas ainda não implementadas serão adicionadas nas próximas etapas:
 
 ```text
 src/
@@ -78,33 +104,41 @@ public/                        imagens e conteúdo editorial local
 
 ## Configuração e execução do frontend
 
-Os comandos desta seção serão utilizáveis **depois da etapa 1**, quando a
-aplicação, os scripts e o lockfile forem criados. No estado atual não há build
-ou servidor frontend para executar.
+Na raiz do repositório:
 
-1. Instalar a versão de Node.js definida na etapa 1 e registrada no projeto.
-2. Executar `npm ci` após obter o repositório com o lockfile.
-3. Copiar o futuro `.env.example` para `.env.local` e preencher:
+```bash
+nvm install
+nvm use
+npm ci
+cp .env.example .env.local
+npm run dev
+```
 
-   ```dotenv
-   # Variáveis privadas do servidor Next.js.
-   # A URL inclui /api e não termina com barra.
-   BACKEND_API_URL=http://localhost:8080/api
-   FRONTEND_ORIGIN=http://localhost:3000
-   ```
+Acessar `http://localhost:3000`. O Next.js cria os arquivos gerados em `.next/`.
+A instalação inicial foi feita com o helper da skill Sites, respeitando npm e o
+lockfile; em novos checkouts, `npm ci` é suficiente.
 
-4. Disponibilizar a API existente em outra aplicação/serviço.
-5. Executar `npm run dev` e acessar `http://localhost:3000`.
+```dotenv
+# Somente no servidor. Preparado para o BFF da etapa 2.
+BACKEND_API_URL=https://hotel-system-management-backend.onrender.com/api
+FRONTEND_ORIGIN=http://localhost:3000
+```
 
-Scripts a disponibilizar na fundação:
+O BFF lê essas variáveis no servidor. Para backend local, usar
+`http://localhost:8080/api`. O `.env.local` deste trabalho foi criado com a URL
+informada, sem credenciais; um arquivo existente é sempre preservado.
+A interface mostra erro recuperável quando a API está indisponível.
 
-| Comando previsto | Finalidade |
+| Comando | Finalidade |
 | --- | --- |
 | `npm run dev` | Servidor de desenvolvimento |
-| `npm run lint` | Análise estática |
-| `npm run typecheck` | Verificação de tipos TypeScript |
+| `npm run lint` | ESLint com zero avisos permitidos |
+| `npm run typecheck` | Geração de tipos de rota + TypeScript sem emissão |
 | `npm run build` | Build de produção |
-| `npm run start` | Execução local do build |
+| `npm run start` | Execução local após o build |
+| `npm test` | Testes focados de proxy, HTTP, sessão, contrato e regras de interface |
+| `npm run smoke:backend` | Conferência HTTP real pelo BFF, com frontend iniciado |
+| `npm run check` | Lint, tipos, testes e build em sequência |
 
 O cliente chamará a base relativa `/api/backend`, sem uma variável pública para
 o host da API. Na Vercel, configurar `BACKEND_API_URL` com a API HTTPS real e
@@ -114,6 +148,77 @@ estática: o proxy depende de servidor.
 
 Não versionar `.env.local`, senhas ou credenciais de demonstração. Não colocar
 `DB_URL`, senhas de bootstrap ou segredos de e-mail em `NEXT_PUBLIC_*`.
+
+## Plano de desenvolvimento e situação das etapas
+
+| Etapa | Situação | Resultado e aceite restante |
+| --- | --- | --- |
+| 0 — Contrato e ambiente | Parcial | Contrato, contas e dados mínimos conferidos; equipe/autoria e prazos finais pendentes |
+| 1 — Fundação | Implementada | Next.js, estilos, componentes, navegação, providers, DTOs e CI; inspeção visual pendente |
+| 2 — Integração | Validada por HTTP local | BFF, cookies, CSRF, login válido e logout dos dois perfis; navegador/Vercel pendentes |
+| 3 — Identidade | Validada por HTTP | Cadastro, perfis, login/logout, conta, senha e revogação exercitados; interação visual pendente |
+| 4 — CRUDs | Validados por HTTP | Room/Amenity: criar, consultar, editar e excluir descartáveis, preservar N:N e recusar vínculos/duplicidade |
+| 5 — Catálogo | Integrado à API | Dados reais de demonstração e disponibilidade; filtros testados localmente, inspeção visual pendente |
+| 6 — Reservas | Validadas por HTTP | Concorrência, isolamento, aprovação, remarcação, cancelamento e conflitos exercitados |
+| 7 — Entidades adicionais | Consultas validadas; autoria pendente | Tipos, usuários e perfis reais consultados; definir matriz nominal e inspecionar telas |
+| 8 — Recuperação | Dependência externa | API de recuperação e envio real de e-mail ainda ausentes |
+| 9 — Qualidade e Vercel | Parcial | 16 testes locais e 18 cenários HTTP reais aprovados; dados mínimos preparados; navegador e deploy pendentes |
+| 10 — Entrega acadêmica | Pendente | Nomes, autoria, vídeo, PDF e Teams |
+
+Desenvolvimento realizado em incrementos: infraestrutura HTTP → identidade e
+conta → CRUDs → catálogo → reservas → telas adicionais → revisão e testes.
+Consulta, mutação e atualização de cache estão ligadas à API, mas nenhum fluxo
+não executado deve ser apresentado como validado.
+
+O plano com dependências e critérios completos está em
+[docs/ESCOPO.md](docs/ESCOPO.md#8-plano-de-implementação-e-desenvolvimento).
+`docs/` e `Skill/` continuam ignorados pelo Git conforme a configuração existente;
+o resumo acima e as instruções essenciais em AGENTS estão nos arquivos versionáveis.
+
+### Verificação HTTP autenticada
+
+Com o frontend iniciado, executar `npm run smoke:backend`. O script confere
+consultas públicas, CSRF, cookies, sessão anônima e logout sem alterar registros
+de negócio. Falhas de consultas não impedem a conferência do protocolo de sessão;
+o comando termina com erro se alguma verificação falhar.
+
+Para incluir login válido, permissões e consultas privadas, configurar somente
+no `.env.local`, sem versionar ou enviar senhas na conversa:
+
+```dotenv
+HOTEL_SMOKE_CLIENT_EMAIL=EMAIL_DA_CONTA_DE_TESTE
+HOTEL_SMOKE_CLIENT_PASSWORD=SENHA_DA_CONTA_DE_TESTE
+HOTEL_SMOKE_RECEPTIONIST_EMAIL=EMAIL_DA_RECEPCAO_DE_TESTE
+HOTEL_SMOKE_RECEPTIONIST_PASSWORD=SENHA_DA_RECEPCAO_DE_TESTE
+```
+
+As contas devem existir. O script não as cria, não imprime dados pessoais e
+não cria reservas ou itens de CRUD. Demonstrações de escrita devem usar um
+ambiente apropriado e registros descartáveis, preservando os mínimos acadêmicos.
+
+### Validação real com dados de demonstração
+
+O script `npm run validate:demo` é manual e não roda no CI. Ele exige conta de
+recepção no ambiente e `HOTEL_DEMO_WRITE_ENABLED=true`, pois cria um novo conjunto
+de registros fictícios a cada execução. Para somente conferir acesso e consultas,
+usar `npm run smoke:backend`.
+
+```bash
+HOTEL_DEMO_WRITE_ENABLED=true npm run validate:demo
+```
+
+A execução realizada aprovou 18 cenários. Criou dois clientes, dois quartos,
+duas características vinculadas e uma terceira característica sem vínculos
+para vídeo, além de duas reservas futuras (uma aprovada e outra cancelada).
+Os registros adicionais usados para exclusão foram removidos pelo contrato da API.
+Os registros preexistentes foram preservados.
+
+As credenciais dos clientes gerados estão apenas em `.env.local`, com permissão
+600 e ignorado pelo Git, nas variáveis `HOTEL_SMOKE_CLIENT_EMAIL/PASSWORD` e
+`HOTEL_DEMO_CLIENT2_EMAIL/PASSWORD`. A senha de recepção fornecida foi usada
+somente na memória dos processos, por stdin oculto, sem ser gravada no projeto.
+A string JDBC não foi inserida no frontend nem usada para acesso direto ao banco.
+O relatório sem senhas fica em `.local/demo-validation.json`, também ignorado.
 
 ## Integração HTTP, sessão e CSRF
 
@@ -172,8 +277,8 @@ do aceite. No acesso direto documentado, CORS aceita GET/POST/PUT/DELETE/OPTIONS
 ## Contrato da API existente
 
 Referência documental do backend no commit `b688b32`, levantada em 20/11/2026.
-O código da API e sua instância em execução não estão presentes nesta análise.
-Conferir o contrato em `/v3/api-docs` e `/swagger-ui.html` na etapa 0; registrar
+O código local foi consultado, mas a API não estava em execução.
+Conferir o contrato publicado em `/v3/api-docs` e `/swagger-ui.html` na etapa 0; registrar
 divergências antes de integrar.
 
 ### Operações documentadas
@@ -430,7 +535,7 @@ erro de rede/CORS com ausência de dados. Não renderizar erros via HTML injetad
 
 **Ausente na API atual.** A troca autenticada de senha não atende à recuperação
 de acesso. O contrato novo proposto e a dependência do responsável pelo backend
-estão na [seção 7 do escopo](ESCOPO.md#7-dependência-externa-recuperação-de-senha).
+estão na [seção 7 do escopo](docs/ESCOPO.md#7-dependência-externa-recuperação-de-senha).
 Essas rotas não integram as 34 operações acima. As regras de negócio de reservas
 e exclusões estão na seção 5 do escopo.
 
@@ -482,14 +587,14 @@ estão descritas no escopo. Hash de senha e campos internos não são expostos.
 
 | Item | Situação |
 | --- | --- |
-| Frontend, BFF e verificações | Planejados; implementação ainda não iniciada |
+| Frontend | Etapas 1–7 implementadas e validadas por HTTP; inspeção visual e publicação pendentes |
 | Recuperação de senha | Dependência de nova implementação no backend |
 | Repositório GitHub do frontend | A preencher |
 | Repositório GitHub do backend | A preencher |
-| API HTTPS / Swagger | A preencher e verificar |
+| API HTTPS / Swagger | [Swagger informado](https://hotel-system-management-backend.onrender.com/docs/index.html); 34 operações conferidas e nova validação real aprovada |
 | Site Vercel | A preencher após publicação |
-| Ambiente e contas de demonstração | A preparar; credenciais fora dos documentos |
-| Nome/identidade do hotel | A definir pela equipe |
+| Ambiente e contas de demonstração | Dados preparados e dois perfis validados; clientes fictícios em .env.local, sem credenciais neste documento |
+| Nome/identidade do hotel | Maré Hotel, proposta provisória a confirmar pela equipe |
 | YouTube / PDF | A produzir; requisitos no escopo |
 | Data sorteada / prazo do Teams | Confirmar; apresentações previstas para 30/11/2026 ou 03/12/2026 |
 
@@ -502,11 +607,109 @@ estão descritas no escopo. Hash de senha e campos internos não são expostos.
 Em 20/11/2026 foram consolidados os cinco documentos recebidos: `README.md`
 anterior (orientado ao backend), `Skill/AGENTS.md`, `docs/PROJECT_CONTEXT.md`,
 `docs/BACKEND_CONTEXT.md` e `docs/ESCOPO_FRONTEND.md`. O conteúdo aplicável foi
-distribuído nos três documentos da raiz; as cópias antigas foram removidas para
-evitar orientações conflitantes e links quebrados.
+distribuído entre README, instruções e escopo; as cópias antigas foram removidas.
+Na organização atual, as instruções detalhadas ficam em Skill/ e o escopo em docs/.
 
 Foram corrigidas as referências a este repositório como projeto Java e à
 integração frontend como trabalho adiado. Os relatos anteriores de compilação
 e validação manual no PostgreSQL pertencem ao backend de origem: não comprovam
-integração, deploy ou testes executados neste frontend. Nenhuma API, banco ou
-aplicação foi executada durante esta consolidação documental.
+integração, deploy ou testes executados neste frontend. Na consolidação documental inicial não foi executada aplicação. A validação
+da primeira etapa do frontend é registrada abaixo; o backend/banco não foram iniciados.
+
+## Fotografias e identidade editorial
+
+Marca provisória, sem vínculo com hotel real. Imagens locais ilustrativas do Unsplash:
+
+- `public/images/hotel-pool.jpg`: [catálogo de fotografias de hotel](https://unsplash.com/s/photos/green-hotel), identificação `photo-1678913308053-316cee77afe9`.
+- `public/images/hotel-room.jpg`: [fotografia do quarto](https://unsplash.com/photos/a-bed-in-a-hotel-room-GOzvLXx4E-E), identificação `photo-1652161854125-1f5289c13eac`.
+
+As fotografias não são imagens persistidas de quartos retornados pelo backend.
+A interface usa fontes do sistema, sem download de fontes durante o build.
+
+## Verificações da primeira etapa — 20/11/2026
+
+| Verificação executada | Resultado |
+| --- | --- |
+| Instalação e reinstalação por `npm ci` | Aprovadas; lockfile reproduzido |
+| `npm run lint` | Aprovado com ESLint 10 e zero avisos de lint |
+| `npm run typecheck` | Aprovado; tipos de rota gerados e TypeScript sem erros |
+| `npm run build` | Aprovado; páginas estáticas geradas pelo Next.js |
+| HTTP de `/`, `/quartos`, `/entrar` | 200, conteúdo esperado e idioma pt-BR |
+| Página inexistente | 404 com conteúdo próprio |
+| Fotografias, ícone e otimizador de imagens | 200 e tipo de imagem correto |
+| Arquivos JavaScript/CSS referenciados | 14 recursos retornaram 200 |
+| Estado de busca | Instâncias isoladas e datas de estadia preservadas no ensaio direto do store |
+| Documentação e contratos | Links locais/âncoras e correspondência dos DTOs conferidos |
+| Navegador, celular/desktop e interação visual | Pendente: host de acesso ao navegador indisponível |
+| Integração real, sessão, CSRF e deploy | Pendentes das próximas etapas |
+
+O sandbox não devolveu a saída do subprocesso TypeScript no primeiro build.
+O mesmo build passou fora dessa restrição, mantendo a verificação de tipos
+habilitada. Não foi necessário desativar validações ou alterar o backend.
+
+A instalação com ESLint 10 emitiu avisos de peer dependency de plugins transitivos
+cuja faixa declarada ainda termina no ESLint 9. `npm ci`, lint, tipos e build
+passaram com a árvore instalada; acompanhar a atualização desses metadados nas
+próximas revisões. O npm informou zero vulnerabilidades na instalação auditada.
+
+O [workflow de CI](.github/workflows/ci.yml) prepara instalação, lint, tipos e
+build no GitHub Actions, com as ações dos exemplos oficiais de
+[checkout](https://github.com/actions/checkout) e
+[setup-node](https://github.com/actions/setup-node). O workflow ainda não foi
+executado remotamente. O servidor de validação local foi encerrado após os checks;
+executar `npm run dev` para voltar a abrir a interface.
+
+## Histórico inicial das etapas 2–7 — 20/11/2026
+
+| Verificação | Resultado observado |
+| --- | --- |
+| OpenAPI publicado | 34 operações; fixture de contrato confrontada com a lista permitida do BFF |
+| Lint / TypeScript / build | Aprovados no último ciclo completo |
+| Testes focados | 16 aprovados, incluindo cookies múltiplos, Origin, 204, CSRF, cache tardio, redirecionamento e regras de prazo |
+| HTTP de páginas | Build final: 18 rotas de navegação com 200/pt-BR; 404 personalizado e recusas 404/405/403 do BFF conferidos; sem inspeção visual/interativa |
+| Rota inexistente | 404 personalizado; em rotas dinâmicas o Next pode transmitir not-found após iniciar resposta 200 |
+| Consultas públicas reais | Inicialmente 200: rooms 0, room-types 2 e amenities 0; depois 500 em todas as três, também no acesso direto |
+| Protocolo real pelo BFF | CSRF 200 com cookie, auth/me anônimo 401, logout 204 e auth/me após logout 401 |
+| Cadastro/login válido/conta/senha/CRUDs/reservas | Código implementado; execução real pendente de credenciais e ambiente funcional |
+| Recuperação de senha | Não implementada: nova API necessária |
+| Navegador e Vercel | Não verificados; host de acesso ao navegador indisponível e site ainda não publicado |
+
+O comando `npm run smoke:backend` terminou com erro nas três consultas de dados
+por causa dos HTTP 500 do backend; a verificação independente de sessão anônima,
+CSRF, cookie e logout passou. Credenciais dos dois perfis ainda não foram configuradas.
+
+As verificações reais não criaram nem alteraram dados de negócio. Os testes
+locais usam respostas controladas somente para exercitar fronteiras do código;
+não substituem a validação da API e do PostgreSQL. Nenhum teste automatizado ou
+banco foi adicionado ao backend Java. O servidor temporário usado para conferir
+o build foi encerrado ao final.
+
+## Validação autenticada e demonstração — 20/11/2026
+
+A nova execução substitui os impedimentos de credenciais e HTTP 500 registrados
+na verificação anterior. Não foi identificada a causa do erro anterior; o serviço
+respondeu corretamente durante todos os cenários descritos abaixo.
+
+| Área | Evidência HTTP real pelo cliente compartilhado e BFF |
+| --- | --- |
+| Recepção e cliente | Login 204, rotação de sessão, auth/me, users/me, permissões e logout verificados nos dois perfis |
+| Cadastro | Dois CLIENT com CustomerProfile; cadastro não autentica automaticamente; CLIENT recebe 403 em users |
+| Conta e senha | Edição de conta/senha encerra sessão; novo login exigido; senha anterior recusada após troca |
+| Amenity | Criação, consulta, edição, exclusão descartável e recusa de exclusão vinculada |
+| Room | Criação, consulta, edição completa e exclusão descartável; preservação de amenityIds e recusa de número duplicado |
+| Concorrência | Duas solicitações simultâneas do mesmo período produziram uma reserva aceita e um 409 |
+| Reservas | PENDING → APPROVED; remarcação volta a PENDING; datas idênticas preservam APPROVED |
+| Isolamento e perfis | Cliente alheio recebe 404 na reserva; CLIENT não aprova; RECEPTIONIST não cancela |
+| Disponibilidade | Pendente bloqueia; datas adjacentes são livres; remarcação libera período antigo; cancelamento libera novo período |
+| Restrições | Período ocupado recusado sem alterar reserva; capacidade incompatível, quarto inativo e exclusões com vínculo recusados |
+| Persistência | Novas consultas da API confirmaram objetos e estados gravados |
+
+Contagens totais conferidas: **User 5, CustomerProfile 3, RoomType 2, Amenity 3,
+Room 2 e Reservation 2**. Todos os seis mínimos acadêmicos estão atendidos nesta
+verificação. Foram preservados os objetos anteriores e a conta administrativa.
+
+A validação acima é HTTP, não inspeção de interações em navegador. Permanecem
+pendentes a inspeção visual, a sessão na Vercel, a matriz de autoria e os materiais
+acadêmicos. O código local do backend contém controller/DTOs de recuperação,
+mas o OpenAPI publicado ainda não expõe essas rotas; a integração desse recurso
+aguarda sua publicação e a configuração de envio real de e-mail.
