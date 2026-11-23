@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { createApiClient } from "../src/lib/api/client.ts";
+import { createApiClient } from "../src/lib/api/client.js";
 
 test("cada escrita recebe novo CSRF; 204 não é interpretado como JSON", async () => {
   const calls = [];

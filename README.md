@@ -22,7 +22,7 @@ Para acessar a gestão, entre com uma conta de **recepcionista** previamente cad
 
 ## Tecnologias
 
-Next.js, React, TypeScript, CSS Modules, TanStack Query e Zustand. O frontend consome a API existente, hospedada no Render.
+Next.js, React, JavaScript, CSS Modules, TanStack Query e Zustand. O frontend consome a API existente, hospedada no Render.
 
 ## Instalação e configuração local
 
@@ -54,7 +54,7 @@ Acesse [http://localhost:3000](http://localhost:3000).
 
 ## Verificação e execução de produção
 
-Para executar lint, verificar tipos, rodar os testes e gerar o build:
+Para executar lint, rodar os testes e gerar o build:
 
 ```bash
 npm run check

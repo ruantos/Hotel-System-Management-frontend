@@ -1,8 +1,8 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { filterRooms } from "../src/features/rooms/filter-rooms.ts";
-import { mayApprove, mayReschedule } from "../src/features/reservations/rules.ts";
-import { createRoomSearchStore } from "../src/stores/room-search-store.ts";
+import { filterRooms } from "../src/features/rooms/filter-rooms.js";
+import { mayApprove, mayReschedule } from "../src/features/reservations/rules.js";
+import { createRoomSearchStore } from "../src/stores/room-search-store.js";
 
 test("catálogo exclui inativos e combina capacidade, tipo e todas as características", () => {
   const base = { active: true, capacity: 2, type: { id: 1 }, amenities: [{ id: 1 }, { id: 2 }] };

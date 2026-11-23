@@ -1,8 +1,8 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { QueryClient } from "@tanstack/react-query";
-import { clearPrivateCache, expireSession, isCurrentSession, sessionVersion } from "../src/lib/api/session-cache.ts";
-import { safeReturnPath } from "../src/features/auth/navigation.ts";
+import { clearPrivateCache, expireSession, isCurrentSession, sessionVersion } from "../src/lib/api/session-cache.js";
+import { safeReturnPath } from "../src/features/auth/navigation.js";
 
 test("encerrar sessão remove dados privados e impede resposta tardia de restaurar cache", async () => {
   const client = new QueryClient({ defaultOptions: { queries: { retry: false, gcTime: 0 } } });

@@ -3,9 +3,9 @@
 import assert from "node:assert/strict";
 import { randomBytes } from "node:crypto";
 import { readFileSync, writeFileSync, mkdirSync, chmodSync } from "node:fs";
-import { createApiClient } from "../src/lib/api/client.ts";
-import { ApiError } from "../src/lib/api/problem.ts";
-import { hotelToday } from "../src/lib/format.ts";
+import { createApiClient } from "../src/lib/api/client.js";
+import { ApiError } from "../src/lib/api/problem.js";
+import { hotelToday } from "../src/lib/format.js";
 
 if (process.env.HOTEL_DEMO_WRITE_ENABLED !== "true") throw new Error("Defina HOTEL_DEMO_WRITE_ENABLED=true para criar dados novos de demonstração.");
 if (!process.env.HOTEL_SMOKE_RECEPTIONIST_EMAIL || !process.env.HOTEL_SMOKE_RECEPTIONIST_PASSWORD) throw new Error("Conta de recepção necessária no ambiente, sem inserir segredos no comando.");

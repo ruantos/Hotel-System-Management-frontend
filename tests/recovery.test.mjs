@@ -1,10 +1,10 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { allowedMethods } from "../src/lib/api/backend-routes.ts";
-import { proxyBackend } from "../src/lib/api/server-proxy.ts";
-import { createApiClient } from "../src/lib/api/client.ts";
-import { retryAfterSeconds } from "../src/lib/api/problem.ts";
-import { validResetToken, passwordConfirmationError } from "../src/features/auth/recovery-contract.ts";
+import { allowedMethods } from "../src/lib/api/backend-routes.js";
+import { proxyBackend } from "../src/lib/api/server-proxy.js";
+import { createApiClient } from "../src/lib/api/client.js";
+import { retryAfterSeconds } from "../src/lib/api/problem.js";
+import { validResetToken, passwordConfirmationError } from "../src/features/auth/recovery-contract.js";
 
 test("recuperação aceita somente POST nas duas rotas documentadas", () => {
   assert.deepEqual(allowedMethods("auth/forgot-password"), ["POST"]);

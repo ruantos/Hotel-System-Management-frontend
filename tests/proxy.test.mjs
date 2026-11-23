@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { proxyBackend } from "../src/lib/api/server-proxy.ts";
+import { proxyBackend } from "../src/lib/api/server-proxy.js";
 
 const origin = "https://hotel.test";
 const config = { backendUrl: "https://spring.test/api", frontendOrigin: origin };

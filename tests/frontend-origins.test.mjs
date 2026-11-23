@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { resolveFrontendOrigins } from "../src/lib/api/frontend-origins.ts";
-import { proxyBackend } from "../src/lib/api/server-proxy.ts";
+import { resolveFrontendOrigins } from "../src/lib/api/frontend-origins.js";
+import { proxyBackend } from "../src/lib/api/server-proxy.js";
 
 const production = "https://hotel-system-management-frontend.vercel.app";
 const deployment = "https://hotel-build-team.vercel.app";

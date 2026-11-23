@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
-import { allowedMethods } from "../src/lib/api/backend-routes.ts";
+import { allowedMethods } from "../src/lib/api/backend-routes.js";
 
 const contract = JSON.parse(readFileSync(new URL("./fixtures/api-routes.json", import.meta.url), "utf8"));
 
